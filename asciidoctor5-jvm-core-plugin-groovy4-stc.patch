@@ -1,0 +1,20 @@
+--- a/model5/jvm-core/src/main/groovy/org/asciidoctor/gradle/model5/jvm/internal/toolchains/DefaultAsciidoctorjToolchain.groovy
++++ b/model5/jvm-core/src/main/groovy/org/asciidoctor/gradle/model5/jvm/internal/toolchains/DefaultAsciidoctorjToolchain.groovy
+@@ -33,8 +33,6 @@
+ 
+ import javax.inject.Inject
+ 
+-import static java.util.Collections.EMPTY_LIST
+-
+ /**
+  * Default implementation of the {@come asciidoctorj} toolchain.
+  *
+@@ -75,7 +73,7 @@
+ 
+         this.engine = objectFactory.newInstance(AsciidoctorjEngine, name)
+         this.processingOptions = objectFactory.newInstance(DefaultProcessingOptions)
+-        this.prepareTasks = objectFactory.listProperty(String).convention(EMPTY_LIST)
++        this.prepareTasks = objectFactory.listProperty(String).convention(Collections.<String>emptyList())
+ 
+         project.pluginManager.withPlugin(AsciidoctorjGemsPlugin.PLUGIN_ID) {
+             addPrepareTasks(
