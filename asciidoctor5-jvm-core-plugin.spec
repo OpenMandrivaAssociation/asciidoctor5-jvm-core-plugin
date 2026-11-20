@@ -1,6 +1,6 @@
 Name:		asciidoctor5-jvm-core-plugin
 Version:	5.1.0
-Release:	1
+Release:	2
 Summary:	AsciidoctorJ Gradle plugins
 Group:		Development/Java
 License:	Apache-2.0
@@ -30,12 +30,13 @@ BuildRequires:	mvn(org.asciidoctor:asciidoctorj) = 3.0.1
 BuildRequires:	mvn(org.asciidoctor:asciidoctorj-api) = 3.0.1
 BuildRequires:	mvn(org.asciidoctor:asciidoctorj-groovy-dsl) = 3.0.0.beta.2
 BuildRequires:	mvn(org.ysb33r.gradle.jruby:jrubygradle-resolver) = 3.0.0
-BuildRequires:	mvn(org.jruby:jruby) = 9.4.14.0
+BuildRequires:	mvn(org.jruby:jruby) = 10.1.3.0
 BuildRequires:	mvn(javax.inject:javax.inject)
 BuildRequires:	sysjar
 BuildRequires:	javapackages-filesystem
 Requires:	apache-groovy
 Requires:	gradle
+%{!?jruby_jar:%global jruby_jar %{_javadir}/jruby.jar}
 
 %description
 org.asciidoctor:asciidoctor5-jvm-core-plugin %{version}. ErbEngine.from
@@ -69,7 +70,7 @@ sed -i \
 	-e 's/@@EPUB@@/2.2.0/' \
 	-e 's/@@GROOVYDSL@@/3.0.0-beta.2/' \
 	-e 's/@@HAML@@/6.3.0/' \
-	-e 's/@@JRUBY@@/9.4.8.0/' \
+	-e 's/@@JRUBY@@/10.1.3.0/' \
 	-e 's/@@JSYNTRAX@@/1.38.2/' \
 	-e 's/@@KROKI@@/0.10.0/' \
 	-e 's/@@PDF@@/2.3.23/' \
@@ -80,7 +81,7 @@ sed -i \
 	-e 's/@@VERSION@@/3.0.1/' \
 	"$props"
 grep -F -q 'asciidoctorj=3.0.1' "$props"
-grep -F -q 'jruby=9.4.8.0' "$props"
+grep -F -q 'jruby=10.1.3.0' "$props"
 grep -F -q 'asciidoctorj.groovydsl=3.0.0-beta.2' "$props"
 if grep -F '@@' "$props"; then
 	exit 1
@@ -108,7 +109,7 @@ do
 	test -s "$extra"
 	tool_cp=$tool_cp:$extra
 done
-src_cp=%{_javadir}/jruby.jar
+src_cp=%{jruby_jar}
 for extra in \
 	%{_javadir}/grolifant5-core.jar \
 	%{_javadir}/grolifant5-herd.jar \
@@ -159,6 +160,7 @@ printf '%s\n' 'implementation-class=org.asciidoctor.gradle.model5.jvm.plugins.As
 printf '%s\n' 'implementation-class=org.asciidoctor.gradle.model5.jvm.plugins.AsciidoctorjEpubPlugin' \
 	> classes/META-INF/gradle-plugins/org.asciidoctor.jvm.epub.properties
 grep -F -q 'asciidoctorj=3.0.1' classes/META-INF/asciidoctor.gradle/asciidoctor5-jvm-core-plugin.properties
+grep -F -q 'jruby=10.1.3.0' classes/META-INF/asciidoctor.gradle/asciidoctor5-jvm-core-plugin.properties
 printf '%s\n' 'Manifest-Version: 1.0' 'Automatic-Module-Name: org.asciidoctor.asciidoctor5.jvm.core.plugin' > manifest.mf
 jar cfm asciidoctor5-jvm-core-plugin.jar manifest.mf -C classes .
 jar i asciidoctor5-jvm-core-plugin.jar
