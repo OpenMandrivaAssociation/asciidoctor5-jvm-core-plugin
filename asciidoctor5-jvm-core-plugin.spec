@@ -23,9 +23,9 @@ BuildRequires:	jansi
 BuildRequires:	ant-lib
 BuildRequires:	gradle
 BuildRequires:	mvn(org.asciidoctor:asciidoctor5-core-plugin) = 5.1.0
-BuildRequires:	mvn(org.ysb33r.gradle:grolifant5-core) = 5.12.7
-BuildRequires:	mvn(org.ysb33r.gradle:grolifant5-herd) = 5.12.7
-BuildRequires:	mvn(org.ysb33r.gradle:grolifant5-rawhide) = 5.12.7
+BuildRequires:	mvn(org.ysb33r.gradle:grolifant5-core) = 5.13.0
+BuildRequires:	mvn(org.ysb33r.gradle:grolifant5-herd) = 5.13.0
+BuildRequires:	mvn(org.ysb33r.gradle:grolifant5-rawhide) = 5.13.0
 BuildRequires:	mvn(org.asciidoctor:asciidoctorj) = 3.0.1
 BuildRequires:	mvn(org.asciidoctor:asciidoctorj-api) = 3.0.1
 BuildRequires:	mvn(org.asciidoctor:asciidoctorj-groovy-dsl) = 3.0.0.beta.2
@@ -37,6 +37,10 @@ BuildRequires:	javapackages-filesystem
 Requires:	apache-groovy
 Requires:	gradle
 %{!?jruby_jar:%global jruby_jar %{_javadir}/jruby.jar}
+%{!?grolifant5_core_jar:%global grolifant5_core_jar %{_javadir}/grolifant5-core.jar}
+%{!?grolifant5_herd_jar:%global grolifant5_herd_jar %{_javadir}/grolifant5-herd.jar}
+%{!?grolifant5_rawhide_jar:%global grolifant5_rawhide_jar %{_javadir}/grolifant5-rawhide.jar}
+%{!?gradle_libdir:%global gradle_libdir %{_datadir}/gradle/lib}
 
 %description
 org.asciidoctor:asciidoctor5-jvm-core-plugin %{version}. ErbEngine.from
@@ -111,9 +115,9 @@ do
 done
 src_cp=%{jruby_jar}
 for extra in \
-	%{_javadir}/grolifant5-core.jar \
-	%{_javadir}/grolifant5-herd.jar \
-	%{_javadir}/grolifant5-rawhide.jar \
+	%{grolifant5_core_jar} \
+	%{grolifant5_herd_jar} \
+	%{grolifant5_rawhide_jar} \
 	%{_javadir}/asciidoctor5-core-plugin.jar \
 	%{_javadir}/asciidoctoreditorconfig.jar \
 	%{_javadir}/asciidoctorj-api.jar \
@@ -126,7 +130,7 @@ do
 	test -s "$extra"
 	src_cp=$src_cp:$extra
 done
-for dir in %{_datadir}/gradle/lib %{_datadir}/gradle/lib/plugins %{_datadir}/gradle/lib/agents; do
+for dir in %{gradle_libdir} %{gradle_libdir}/plugins %{gradle_libdir}/agents; do
 	if [ -d "$dir" ]; then
 		for j in "$dir"/*.jar; do
 			if [ -s "$j" ]; then
@@ -195,17 +199,17 @@ cat > asciidoctor5-jvm-core-plugin.pom << 'END'
     <dependency>
       <groupId>org.ysb33r.gradle</groupId>
       <artifactId>grolifant5-core</artifactId>
-      <version>5.12.7</version>
+      <version>5.13.0</version>
     </dependency>
     <dependency>
       <groupId>org.ysb33r.gradle</groupId>
       <artifactId>grolifant5-herd</artifactId>
-      <version>5.12.7</version>
+      <version>5.13.0</version>
     </dependency>
     <dependency>
       <groupId>org.ysb33r.gradle</groupId>
       <artifactId>grolifant5-rawhide</artifactId>
-      <version>5.12.7</version>
+      <version>5.13.0</version>
     </dependency>
     <dependency>
       <groupId>org.ysb33r.gradle.jruby</groupId>
